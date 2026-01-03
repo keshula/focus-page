@@ -1,27 +1,53 @@
 let interval;
-let timeLeft = 25 * 60;
+let total = 0;
+let remaining = 0;
+let paused = false;
 
-function startTimer(minutes) {
+const timerEl = document.getElementById("timer");
+const statusEl = document.getElementById("status");
+
+document.querySelectorAll("[data-time]").forEach(btn => {
+  btn.addEventListener("click", () => start(btn.dataset.time));
+});
+
+document.getElementById("pause").addEventListener("click", togglePause);
+document.getElementById("reset").addEventListener("click", reset);
+
+function start(minutes) {
   clearInterval(interval);
-  timeLeft = minutes * 60;
-  update();
-
-  interval = setInterval(() => {
-    timeLeft--;
-    update();
-    if (timeLeft <= 0) clearInterval(interval);
-  }, 1000);
+  total = minutes * 60;
+  remaining = total;
+  paused = false;
+  statusEl.textContent = "running";
+  tick();
+  interval = setInterval(tick, 1000);
 }
 
-function resetTimer() {
+function tick() {
+  if (paused) return;
+  remaining--;
+  update();
+  if (remaining <= 0) {
+    clearInterval(interval);
+    statusEl.textContent = "done";
+  }
+}
+
+function togglePause() {
+  paused = !paused;
+  statusEl.textContent = paused ? "paused" : "running";
+}
+
+function reset() {
   clearInterval(interval);
-  timeLeft = 0;
-  document.getElementById("timer").textContent = "00:00";
+  remaining = 0;
+  timerEl.textContent = "00:00";
+  statusEl.textContent = "idle";
 }
 
 function update() {
-  const m = Math.floor(timeLeft / 60);
-  const s = timeLeft % 60;
-  document.getElementById("timer").textContent =
+  const m = Math.floor(remaining / 60);
+  const s = remaining % 60;
+  timerEl.textContent =
     `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
 }

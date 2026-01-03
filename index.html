@@ -7,19 +7,29 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="background"></div>
+  <div class="ambient"></div>
 
   <main class="container">
-    <h1>Focus</h1>
-    <p class="subtitle">minimal focus environment</p>
+    <header>
+      <h1>Focus</h1>
+      <span class="tag">deep work mode</span>
+    </header>
 
-    <div id="timer">25:00</div>
+    <section class="timer-card">
+      <div id="progress-ring"></div>
+      <div id="timer">25:00</div>
+    </section>
 
-    <div class="controls">
-      <button onclick="startTimer(25)">25</button>
-      <button onclick="startTimer(50)">50</button>
-      <button onclick="resetTimer()">reset</button>
-    </div>
+    <section class="controls">
+      <button data-time="25">25 min</button>
+      <button data-time="50">50 min</button>
+      <button id="pause">pause</button>
+      <button id="reset">reset</button>
+    </section>
+
+    <footer>
+      <span id="status">idle</span>
+    </footer>
   </main>
 
   <script src="script.js"></script>
